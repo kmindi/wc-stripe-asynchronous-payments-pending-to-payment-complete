@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * Description: This plugin executes "payment complete" if sepa debit is used and the payment is still pending, but you want to regard it as complete.
  * Version: 0.1
  * Author: Kai Mindermann
+ * Text Domain: wc_stripe_apptpc
  * License: GPL3
  */
 
@@ -27,9 +28,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-if(!class_exists('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE'))
+if(!class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
 {
-    class WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE
+    class WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete
     {
         /**
          * Construct the plugin object
@@ -63,7 +64,7 @@ if(!class_exists('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE'))
               $order->payment_complete($response->id);
               
               /* translators: response id */
-              $order->add_order_note( sprintf( __( 'Pending status automatically set as payment complete by custom hook (Charge ID: %s)', 'wc_stripe_apptpc' ), $response->id ) );
+              $order->add_order_note( sprintf( __( 'Pending Payment status of order automatically set as Payment Complete. The payment may still fail! (Charge ID: %s)', 'wc_stripe_apptpc' ), $response->id ) );
               if ( is_callable( array( $order, 'save' ) ) ) {
                 $order->save();
               }
@@ -88,15 +89,15 @@ if(!class_exists('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE'))
         {
             // Do nothing
         } // END public static function deactivate
-    } // END class WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE
-} // END if(!class_exists('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE'))
+    } // END class WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete
+} // END if(!class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
 
-if(class_exists('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE'))
+if(class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
 {
     // Installation and uninstallation hooks
-    register_activation_hook(__FILE__, array('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE', 'activate'));
-    register_deactivation_hook(__FILE__, array('WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE', 'deactivate'));
+    register_activation_hook(__FILE__, array('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete', 'activate'));
+    register_deactivation_hook(__FILE__, array('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete', 'deactivate'));
 
     // instantiate the plugin class
-    $main_instance = new WP_WC_STRIPE_ASYNCHRONOUS_PAYMENT_TO_PAYMENT_COMPLETE();
+    $main_instance = new WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete();
 }

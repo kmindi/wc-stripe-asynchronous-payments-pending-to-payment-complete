@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * GitHub Plugin URI: kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * GitHub Plugin URI: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * Description: This plugin executes "payment complete" if sepa debit is used and the payment is still pending, but you want to regard it as complete.
- * Version: 0.1
+ * Version: 0.1.1
  * Author: Kai Mindermann
  * Text Domain: wc_stripe_apptpc
  * License: GPL3
@@ -53,6 +53,7 @@ if(!class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
         /**
          * Action function that sets the order to "payment completed" even if the SEPA direct debit is pending at Stripe.
          * @author Kai Mindermann
+         * @since 0.1.0
          */
         public function action_wc_gateway_stripe_regard_sepa_pending_as_complete ($response, $order) {
           // check if Subscriptions are enabled

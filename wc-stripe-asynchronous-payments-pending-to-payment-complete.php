@@ -2,13 +2,17 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 /**
  * Plugin Name: WooCommerce Stripe Gateway Asynchronous Payments to Payment Complete
+ * Plugin URI: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * GitHub Plugin URI: kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * GitHub Plugin URI: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * Description: This plugin executes "payment complete" if sepa debit is used and the payment is still pending, but you want to regard it as complete.
- * Version: 0.1.1
- * Author: Kai Mindermann
+ * Version: 0.1.2
  * Text Domain: wc_stripe_apptpc
- * License: GPL3
+ * Author: Kai Mindermann
+ * License: GNU General Public License v3
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * Requires WP: 4.9
+ * Requires PHP: 7.0
  */
 
 /*

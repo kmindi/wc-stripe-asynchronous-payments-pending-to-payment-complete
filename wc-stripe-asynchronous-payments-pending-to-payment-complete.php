@@ -5,8 +5,8 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * Plugin URI: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * GitHub Plugin URI: kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * GitHub Plugin URI: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
- * Description: This plugin executes "payment complete" if sepa debit is used and the payment is still pending, but you want to regard it as complete.
- * Version: 0.1.2
+ * Description: This plugin executes "payment complete" if SEPA debit is used for subscriptions and the payment is still pending/processing, but you want to regard it as complete.
+ * Version: 0.2.0
  * Text Domain: wc_stripe_apptpc
  * Author: Kai Mindermann
  * License: GNU General Public License v3
@@ -62,18 +62,34 @@ if(!class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
         public function action_wc_gateway_stripe_regard_sepa_pending_as_complete ($response, $order) {
           // check if Subscriptions are enabled
           if ( class_exists( 'WC_Subscriptions_Order' ) ) {
-            // check if payment (stripe response) is in pending state
-            // check if payment (stripe response) is of 'sepa_debit' type
-            // check if order contains a subscription
-            if( $response->status === 'pending' && $response->source->type === 'sepa_debit' && function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order->id ) || wcs_is_subscription( $order->id ) || wcs_order_contains_renewal( $order->id ) ) ) {
-              $order->payment_complete($response->id);
+              // check if payment (stripe response) is in processing state (Payment Intents) or pending state (Sources)
+              // check if payment method (stripe response) is of 'sepa_debit' type
               
-              /* translators: response id */
-              $order->add_order_note( sprintf( __( 'Pending Payment status of order automatically set as Payment Complete. The payment may still fail! (Charge ID: %s)', 'wc_stripe_apptpc' ), $response->id ) );
-              if ( is_callable( array( $order, 'save' ) ) ) {
-                $order->save();
+              $continue = false;
+
+              if (isset($response->object) && $response->object === 'payment_intent' && $response->status === 'processing') {
+                // Handle Payment Intents API
+                if (isset($response->payment_method_details->type) && $response->payment_method_details->type === 'sepa_debit') {
+                    $continue = true;
+                }
+              } elseif (isset($response->object) && $response->object === 'source' && $response->status === 'pending') {
+                  // Handle Sources API
+                  if (isset($response->source) && isset($response->source->type) && $response->type === 'sepa_debit') {
+                      $continue = true;
+                  }
               }
-            }
+
+              // check if order contains a subscription
+
+              if($continue && function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order->id ) || wcs_is_subscription( $order->id ) || wcs_order_contains_renewal( $order->id ) ) ) {
+                $order->payment_complete($response->id);
+                
+                /* translators: response id */
+                $order->add_order_note( sprintf( __( 'Pending Payment status of order automatically set as Payment Complete. The payment may still fail! (Charge/Payment Intent ID: %s)', 'wc_stripe_apptpc' ), $response->id ) );
+                if ( is_callable( array( $order, 'save' ) ) ) {
+                  $order->save();
+                }
+              }
             // TODO update post_meta?
             // TODO update fees?
           }

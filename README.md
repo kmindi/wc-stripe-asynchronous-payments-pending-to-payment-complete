@@ -1,6 +1,7 @@
 # Pending Payments to Payment Complete for WooCommerce Stripe Payment Gateway
 
-Wordpress Plugin that executes "payment complete" if SEPA direct debit is used and the payment is still pending, but you want to regard it as complete. Use this extension if you trust that the customer has provided correct payment information and that the payment usually succeeds. If it does not you should handle it manually and maybe charge the customer additional fees.
+Wordpress Plugin that executes "payment complete" if SEPA direct debit is used for a subscription and the payment is still pending, but you want to regard it as complete. 
+Use this extension if you trust that the customer has provided correct payment information and that the payment usually succeeds. If it does not you should handle it manually and maybe charge the customer additional fees.
 
 ## Installation
 
@@ -17,4 +18,4 @@ Now imagine you sell virtual products like memberships that require purchasing a
 ## How this extension solves the problem
 
 1. They key part is that we hook into the action `wc_gateway_stripe_process_response` from the Stripe plugin.
-2. In this action hook we execute `$order->payment_complete` if the response is using "sepa_debit" and the order is in "pending" state.
+2. In this action hook we execute `$order->payment_complete` if the response is using "sepa_debit" and the payment is in `pending`/`processing` state.

@@ -74,7 +74,7 @@ if(!class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
                 }
               } elseif (isset($response->object) && $response->object === 'source' && $response->status === 'pending') {
                   // Handle Sources API
-                  if (isset($response->source) && isset($response->source->type) && $response->type === 'sepa_debit') {
+                  if (isset($response->source) && isset($response->source->type) && $response->source->type === 'sepa_debit') {
                       $continue = true;
                   }
               }

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * GitHub Plugin URI: kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * GitHub Plugin URI: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete
  * Description: This plugin executes "payment complete" if SEPA debit is used for subscriptions and the payment is still pending/processing, but you want to regard it as complete.
- * Version: 0.2.0
+ * Version: 0.3.1
  * Text Domain: wc_stripe_apptpc
  * Author: Kai Mindermann
  * License: GNU General Public License v3
@@ -67,8 +67,14 @@ if(!class_exists('WC_Stripe_Asynchronous_Payments_Pending_to_Payment_Complete'))
               
               $continue = false;
 
-              if (isset($response->object) && $response->object === 'payment_intent' && $response->status === 'processing') {
+              if (isset($response->object) && $response->object === 'charge' && $response->status === 'pending') {
+                // Handle Charge API
+                if (isset($response->payment_method_details->type) && $response->payment_method_details->type === 'sepa_debit') {
+                    $continue = true;
+                }
+              } elseif (isset($response->object) && $response->object === 'payment_intent' && $response->status === 'processing') {
                 // Handle Payment Intents API
+                // TODO is this even a possible response?
                 if (isset($response->payment_method_details->type) && $response->payment_method_details->type === 'sepa_debit') {
                     $continue = true;
                 }

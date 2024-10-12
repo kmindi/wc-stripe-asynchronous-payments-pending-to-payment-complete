@@ -1,4 +1,4 @@
-# Pending Payments to Payment Complete for WooCommerce Stripe Payment Gateway
+# Pending Subscription Payments to Payment Complete for WooCommerce Stripe Payment Gateway
 
 Wordpress Plugin that executes "payment complete" if SEPA direct debit is used for a subscription and the payment is still pending, but you want to regard it as complete. 
 Use this extension if you trust that the customer has provided correct payment information and that the payment usually succeeds. If it does not you should handle it manually and maybe charge the customer additional fees.

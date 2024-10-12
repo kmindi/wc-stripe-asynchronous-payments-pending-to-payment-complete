@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 ### Security
 
+## [0.3.0] - 2024-10-12
+### Release Notes
+Supports Charge response objects
+### Added
+- Added support for Charge response objects
+
 ## [0.2.1] - 2024-10-04
 
 ### Changed
@@ -46,7 +52,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - initial release
 
-[Unreleased]: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/kmindi/wc-stripe-asynchronous-payments-pending-to-payment-complete/compare/v0.1.1...v0.1.2
